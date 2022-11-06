@@ -6,7 +6,7 @@ const config = require("config");
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    minLength: [5, "firstName should be atleast 5 characters long"],
+    minLength: [2, "firstName should be atleast 5 characters long"],
     maxLength: [50, "firstName should be atmost 50 characters long"],
     required: true,
   },
@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    minLength: [8, "Password should be atleast 8 characters long"],
+    minLength: [5, "Password should be atleast 8 characters long"],
     maxLength: [1024, "Password should be atmost 1024 characters long"],
     required: true,
   },
@@ -61,6 +61,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  verificationLink: {
+    type: String,
+    default:""
+  },
 });
 
 userSchema.methods.getAuthToken = function () {
@@ -80,7 +84,7 @@ const User = mongoose.model("user", userSchema);
 
 const validateUser = (user) => {
   const schema = Joi.object({
-    firstName: Joi.string().min(5).max(50).required(),
+    firstName: Joi.string().min(2).max(50).required(),
     lastName: Joi.string().min(2).max(50).required(),
     email: Joi.string().min(5).max(255).required().email(),
     phone: Joi.string().min(7).max(10).required(),

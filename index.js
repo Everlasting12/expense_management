@@ -18,6 +18,8 @@ establishDatabaseConnection();
 
 //db
 require("./start/cors")(app);
+
+require("./start/logging")();
 //-->
 // require("./startup/login")();
 

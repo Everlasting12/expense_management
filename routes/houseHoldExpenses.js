@@ -32,6 +32,26 @@ router.get("/:id", async (req, res) => {
     return res.status(404).send("houseHoldExpense are not found");
   res.send(houseHoldExpense);
 });
+//--------------------------pfs------------------------------------------------
+router.post("/pfs", auth, async (req, res) => {
+  let { titleName } = req.body;
+  let query = {};
+  let query2 = {};
+  let reg;
+  if (titleName) {
+    console.log("in pfs api:" + titleName);
+    reg = new RegExp(`^${titleName}`, "i");
+    query["household.name"] = reg;
+    query2["expensetype.name"] = reg;
+  }
+  const houseHoldExpenses = await HouseHoldExpense.find({
+    $or: [query, query2],
+  });
+
+  if (!houseHoldExpenses)
+    return res.status(404).send("houseHoldExpenses are not found");
+  res.send(houseHoldExpenses);
+});
 
 router.post("/", async (req, res) => {
   const { error } = validateHouseHoldExpense(req.body);
@@ -44,12 +64,18 @@ router.post("/", async (req, res) => {
   if (!expensetype) return res.status(404).send("expensetype not found");
 
   const houseHoldExpense = new HouseHoldExpense({
-    householdId: req.body.householdId,
-    expensetypeId: req.body.expensetypeId,
+    household: {
+      _id: houseHold._id,
+      name: houseHold.name,
+    },
+    expensetype: {
+      _id: expensetype._id,
+      name: expensetype.name,
+    },
     paymentDetails: {
-      amount: req.body.amount,
-      date: req.body.date,
-      method: req.body.method,
+      amount: req.body.paymentDetails.amount,
+      date: req.body.paymentDetails.date,
+      method: req.body.paymentDetails.method,
     },
     description: req.body.description,
     paidThrough: req.body.paidThrough,

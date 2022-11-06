@@ -39,6 +39,7 @@ const houseHoldExpenseSchema = new Schema({
       maxLength: 50,
       // required: true,
     },
+    // required: true,
   },
 
   description: {
@@ -49,17 +50,17 @@ const houseHoldExpenseSchema = new Schema({
   },
   paidThrough: {
     type: String,
-    minLength: [5, " should be atleast 5 characters long"],
+    minLength: [2, " should be atleast 5 characters long"],
     maxLength: [30, "should be atmost 30 characters long"],
     require: true,
   },
 
-  paidBy: []
-    // type: String,
-    // minLength: [3, " should be atleast 3 characters long"],
-    // maxLength: [25, " should be atmost 25 characters long"],
-    // required: true,
-  ,
+  paidBy: {
+    type: String,
+    minLength: [3, " should be atleast 3 characters long"],
+    maxLength: [25, " should be atmost 25 characters long"],
+    required: true,
+  },
 });
 
 const HouseHoldExpense = mongoose.model(
@@ -73,12 +74,12 @@ function validateHouseHoldExpense(HouseHoldExpense) {
     expensetypeId: Joi.objectId(),
     paymentDetails: {
       amount: Joi.number(),
-      // date: Joi.date(),
+      date: Joi.date(),
       method: Joi.string().min(3).max(20),
     },
     description: Joi.string().min(3).max(200).required(),
-    paidThrough: Joi.string().min(3).max(20).required(),
-    paidBy: Joi.array(),
+    paidThrough: Joi.string().min(2).max(20).required(),
+    paidBy: Joi.string(),
   });
   return schema.validate(HouseHoldExpense);
 }

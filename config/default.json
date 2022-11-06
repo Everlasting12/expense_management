@@ -1,4 +1,6 @@
 {
   "Mongo-DB-url": "mongodb://localhost:27017/expense_management",
-  "jwtPrivateKey": "12345"
+  "jwtPrivateKey": "12345",
+  "AUTH_EMAIL": "omkarm@valueaddsofttech.com",
+  "AUTH_PASS": "Tirexx@123"
 }

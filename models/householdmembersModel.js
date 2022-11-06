@@ -39,8 +39,8 @@ const Householdmember = mongoose.model(
 
 function validatehouseHoldmembers(householdmembers) {
   const schema = Joi.object({
-    householdId: Joi.objectId(),
-    userId: Joi.objectId(),
+    householdId: Joi.string(),
+    userId: Joi.string(),
   });
   return schema.validate(householdmembers);
 }
